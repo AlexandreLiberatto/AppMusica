@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import { Audio } from 'expo-av';
 import {AntDesign} from '@expo/vector-icons';
+import Player from './Player';
 
 export default function App() {
 
@@ -66,23 +67,41 @@ export default function App() {
     },
   ]);
 
-  const changeMusic = (id) => {
+  const changeMusic = async (id) => {
+    let curFile = null; 
     let newMusics = musicas.filter((val,k)=>{
       if(id == k){
         musicas[k].playing = true;
+        curFile = musicas[k].file;
       } else {
         musicas[k].playing = false;
       }
       return musicas[k];
     })
+
+    if(audio != null){
+      audio.unloadAsync();
+    }
+
+    let curAudio = new Audio.Sound();
+
+    try {
+      await curAudio.loadAsync(curFile);
+      await curAudio.playAsync();
+    } catch (error) {
+      alert(`Aconteceu o seguinte erro: ${error}`)
+    }
+
+    setarAudio(curAudio);
     setarMusicas(newMusics);
   }
 
   return (
+    <View style={{flex:1}}>
     <ScrollView style={styles.container}>
       <StatusBar hidden />
       <View style={styles.header}>
-        <Text style={styles.titulo}>App Música | Liberato Sistemas</Text>
+        <Text style={styles.titulo}>App Música 🎶🎼🎵</Text>
       </View>  
 
       <View style={styles.table}>
@@ -117,7 +136,10 @@ export default function App() {
         })
       }
 
+      <View style={{paddingBottom:200}}></View>
     </ScrollView>
+    <Player />
+    </View>
   );
 }
 
