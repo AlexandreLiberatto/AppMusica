@@ -151,6 +151,7 @@ export default function App() {
     audioIndex={audioIndex}
     musicas={musicas} setarMusicas={setarMusicas}
     audio={audio} setarAudio={setarAudio}
+    setarAudioIndex={setarAudioIndex}
     />
     </View>
   );
