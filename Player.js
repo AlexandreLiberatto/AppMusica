@@ -5,18 +5,73 @@ import { Audio } from 'expo-av';
 import {AntDesign} from '@expo/vector-icons';
 
 
-export default function Player() {
+export default function Player(props) {
+
+    const handlePlay = async() => {
+        let curFile = props.musicas[props.audioIndex].file;
+
+        let newMusics = props.musicas.filter((val,k)=>{
+            if(props.audioIndex == k){
+              props.musicas[k].playing = true;
+              curFile = props.musicas[k].file;
+              
+            } else {
+              props.musicas[k].playing = false;
+            }
+            return props.musicas[k];
+          })
+
+          try {
+
+            if(props.audio != null){
+                props.setPlaying(true);
+                props.setarMusicas(newMusics);
+                await props.audio.playAsync();
+            } else {
+                let curAudio = new Audio.Sound();
+                try {
+                    await curAudio.loadAsync(curFile);
+                    await curAudio.playAsync();
+                } catch (error) {
+                    alert(`Aconteceu o seguinte erro: ${error}`)
+                }
+                props.setarAudio(curAudio);
+                props.setarMusicas(newMusics);
+                props.setPlaying(true);
+            }
+            
+          } catch (error) {
+            alert(`Aconteceu o seguinte erro: ${error}`)
+          }
+
+    }
+
+    const handlePause = async() => {
+        if(props.audio != null){
+            props.audio.pauseAsync();
+        }
+        props.setPlaying(false);
+    }
+
     return (
       <View style={styles.player}>
         <TouchableOpacity style={styles.touch}>
             <AntDesign name= "banckward" size={35} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touch}>
+        {
+        (!props.playing) ?
+        <TouchableOpacity onPress={()=> handlePlay()} style={styles.touch}>
             <AntDesign name= "playcircleo" size={35} color="white" />
         </TouchableOpacity>
+         :
+        <TouchableOpacity onPress={()=> handlePause()} style={styles.touch}>
+            <AntDesign name= "pausecircleo" size={35} color="white" />
+        </TouchableOpacity>
+        }
         <TouchableOpacity style={styles.touch}>
             <AntDesign name= "forward" size={35} color="white" />
         </TouchableOpacity>
+
       </View>
     );
   }

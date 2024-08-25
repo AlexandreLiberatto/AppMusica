@@ -1,11 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, LogBox} from 'react-native';
 import { Audio } from 'expo-av';
 import {AntDesign} from '@expo/vector-icons';
 import Player from './Player';
 
 export default function App() {
+
+  LogBox.ignoreAllLogs(true);
+
+  const [audioIndex, setarAudioIndex] = useState(0);
+
+  const [playing, setPlaying] = useState(false);
 
   const [audio, setarAudio] = useState(null);
 
@@ -73,6 +79,8 @@ export default function App() {
       if(id == k){
         musicas[k].playing = true;
         curFile = musicas[k].file;
+        setPlaying(true);
+        setarAudioIndex(id);
       } else {
         musicas[k].playing = false;
       }
@@ -101,12 +109,12 @@ export default function App() {
     <ScrollView style={styles.container}>
       <StatusBar hidden />
       <View style={styles.header}>
-        <Text style={styles.titulo}>App Música 🎶🎼🎵</Text>
+        <Text style={styles.titulo}>🎶🎼🎵 App Música 🎶🎼🎵</Text>
       </View>  
 
       <View style={styles.table}>
-        <Text style={styles.musica}>Música</Text>
-        <Text style={styles.musica}>Artista</Text>
+        <Text style={styles.musica}>🎸 Música</Text>
+        <Text style={styles.musica}>😎 Artista</Text>
       </View> 
 
       {
@@ -138,7 +146,12 @@ export default function App() {
 
       <View style={{paddingBottom:200}}></View>
     </ScrollView>
-    <Player />
+    <Player 
+    playing={playing} setPlaying={setPlaying} 
+    audioIndex={audioIndex}
+    musicas={musicas} setarMusicas={setarMusicas}
+    audio={audio} setarAudio={setarAudio}
+    />
     </View>
   );
 }
@@ -173,6 +186,7 @@ const styles = StyleSheet.create({
   musica: {
     width: '50%',
     color: '#fff',
+    fontSize:18,
   },
 
   musicaT: {
