@@ -12,7 +12,7 @@ AppMusica é um aplicativo de música criado com React Native e Expo. Ele permit
 
 1. Clone o Repositório:
     
-    git clone https://github.com/seu-usuario/AppMusica.git
+    git clone https://github.com/AlexandreLiberatto/AppMusica.git
   
 2. Navegue até o diretório do projeto:
    
