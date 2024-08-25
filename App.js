@@ -11,23 +11,72 @@ export default function App() {
   const [musicas, setarMusicas] = useState([
 
     {
-      nome: 'Sweet child of mine',
-      artista: 'Guns N Roses',
-      playing: 'true',
-      file: ''
+      nome: 'Alô',
+      artista: 'Léo Magalhães',
+      playing: 'false',
+      file: require('./musicas/alo_leo_magalhaes.mp3')
     },
     {
-      nome: 'Welcom to the jungle',
-      artista: 'Guns N Roses',
+      nome: 'Completa a Frase',
+      artista: 'Henrrique e Juliano',
       playing: 'false',
-      file: ''
-    },{
-      nome: 'This love',
-      artista: 'Maroon 5',
+      file: require('./musicas/completa_a_frase_henrrique_e_juliano.mp3')
+    },
+    {
+      nome: 'Efeitos',
+      artista: 'Édson Mel',
       playing: 'false',
-      file: ''
-    }
-  ])
+      file: require('./musicas/efeitos_edson_mel.mp3')
+    },
+    {
+      nome: 'Lembranças',
+      artista: 'Hungria',
+      playing: 'false',
+      file: require('./musicas/hungria_hiphop_lembrancas.mp3')
+    },
+    {
+      nome: 'Um Pedido',
+      artista: 'Hungria',
+      playing: 'false',
+      file: require('./musicas/hungria_hiphop_um_pedido.mp3')
+    },
+    {
+      nome: 'Dengo',
+      artista: 'João Gomes',
+      playing: 'false',
+      file: require('./musicas/joao_gomes_dengo.mp3')
+    },
+    {
+      nome: 'Seja Pra Mim',
+      artista: 'João Gomes',
+      playing: 'false',
+      file: require('./musicas/joao_gomes_seja_pra_mim.mp3')
+    },
+    {
+      nome: 'Dono do Mar',
+      artista: 'Pricila Sotero',
+      playing: 'false',
+      file: require('./musicas/priscila_sotero_dono_do_mar.mp3')
+    },
+    {
+      nome: 'Morada',
+      artista: 'Pricila Sotero',
+      playing: 'false',
+      file: require('./musicas/priscila_sotero_morada.mp3')
+    },
+  ]);
+
+  const changeMusic = (id) => {
+    let newMusics = musicas.filter((val,k)=>{
+      if(id == k){
+        musicas[k].playing = true;
+      } else {
+        musicas[k].playing = false;
+      }
+      return musicas[k];
+    })
+    setarMusicas(newMusics);
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -42,13 +91,13 @@ export default function App() {
       </View> 
 
       {
-        musicas.map((val) => {
+        musicas.map((val, k) => {
 
-          if(val.playing === 'true'){
+          if(val.playing){
             //renderiza algo aqui
             return(
             <View style={styles.table}>
-              <TouchableOpacity style={styles.touch}>
+              <TouchableOpacity onPress={()=>changeMusic(k)} style={styles.touch}>
                 <Text style={styles.musicaT}><AntDesign name="play" size={18} color="#1db954" />  {val.nome}</Text>
                 <Text style={styles.musicaT}>{val.artista}</Text>
               </TouchableOpacity>
@@ -58,7 +107,7 @@ export default function App() {
             //renderiza outra coisa aqui
             return(
               <View style={styles.table}>
-              <TouchableOpacity style={styles.touch}>
+              <TouchableOpacity onPress={()=>changeMusic(k)} style={styles.touch}>
                 <Text style={styles.musica}><AntDesign name="play" size={18} color="#fff" />  {val.nome}</Text>
                 <Text style={styles.musica}>{val.artista}</Text>
               </TouchableOpacity>
